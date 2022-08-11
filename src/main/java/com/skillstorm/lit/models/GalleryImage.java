@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -42,6 +43,7 @@ public class GalleryImage {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID")
+	@JsonIdentityReference(alwaysAsId = true)
 	private ListingDetails listingDetail;
 
 	public GalleryImage() {
