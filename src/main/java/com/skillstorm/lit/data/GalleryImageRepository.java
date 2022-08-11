@@ -11,6 +11,6 @@ import com.skillstorm.lit.models.GalleryImage;
 @Repository
 public interface GalleryImageRepository extends CrudRepository<GalleryImage, UUID> {
 
-	List<GalleryImage> findByListingDetail();
+	List<GalleryImage> findByListingDetail(UUID id);
 	
 }

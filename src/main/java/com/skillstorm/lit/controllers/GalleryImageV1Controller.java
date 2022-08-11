@@ -6,5 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/gallery/v1")
 public class GalleryImageV1Controller {
-
+	
+	
 }
