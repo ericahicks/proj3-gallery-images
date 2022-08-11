@@ -10,6 +10,8 @@ public interface GalleryImageService {
 	
 	List<GalleryImage> findByListingDetailsId();
 	
-	GalleryImage findByUUID();
+	GalleryImage findById();
+	
+	GalleryImage create();
 
 }
