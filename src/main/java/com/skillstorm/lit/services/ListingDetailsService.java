@@ -29,5 +29,9 @@ public class ListingDetailsService {
 		Optional<ListingDetails> details = repository.findByIdString(id);
 		return details.isPresent() ? details.get() : null;
 	}
-
+	
+	public ListingDetails save(ListingDetails detail) {
+		return repository.save(detail);
+	}
+	
 }

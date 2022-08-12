@@ -11,7 +11,7 @@ import com.skillstorm.lit.models.GalleryImage;
 import com.skillstorm.lit.models.ListingDetails;
 
 @Repository
-public interface GalleryImageRepository extends CrudRepository<GalleryImage, String> {
+public interface GalleryImageRepository extends CrudRepository<GalleryImage, UUID> {
 
 	@Query("SELECT d FROM GalleryImage g JOIN g.listingDetail d")
 	List<ListingDetails> findAllListingDetailsD();
@@ -22,7 +22,11 @@ public interface GalleryImageRepository extends CrudRepository<GalleryImage, Str
 	@Query("SELECT g.listingDetail FROM GalleryImage g")
 	List<ListingDetails> findAllListingDetails();
 	
+	List<GalleryImage> getAllByListingDetail(ListingDetails listingDetail);
+	
 
-	List<GalleryImage> findByListingDetail(UUID id);
+	//List<GalleryImage> findByListingDetail(UUID id);
+	
+	void deleteByListingDetail(ListingDetails listingDetail);
 	
 }
