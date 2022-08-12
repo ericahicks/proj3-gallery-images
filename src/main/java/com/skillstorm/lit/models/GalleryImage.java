@@ -46,8 +46,8 @@ public class GalleryImage {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID", columnDefinition = "BINARY(16)")
-//	@JsonBackReference
 	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonBackReference
 //	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private ListingDetails listingDetail;
 
