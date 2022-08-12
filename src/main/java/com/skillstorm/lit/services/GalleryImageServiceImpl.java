@@ -2,9 +2,9 @@ package com.skillstorm.lit.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -41,17 +41,30 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 	
 	@Override
 	public GalleryImage update(GalleryImage galleryImage) {
-		return repository.findById(galleryImage.getId()).isPresent() ? repository.save(galleryImage) : null;
+		if (repository.findById(galleryImage.getId()).isPresent() ) {
+			return repository.save(galleryImage); 
+	    } else {
+	    	throw new EntityNotFoundException();
+	    }
 	}
 
 	@Override
 	public void deleteById(UUID id) {
-		repository.deleteById(id);
+		if (repository.findById(id).isPresent() ) {
+			repository.deleteById(id);   
+	    } else {
+	    	throw new EntityNotFoundException();
+	    }
+		
 	}
 
 	@Override
 	public void deleteAllFromDetails(ListingDetails listingDetail) {
-		repository.deleteByListingDetail(listingDetail);
+		if (repository.findById(listingDetail.getId()).isPresent() ) {
+			repository.deleteByListingDetail(listingDetail);   
+	    } else {
+	    	throw new EntityNotFoundException();
+	    }
 	}
 
 }

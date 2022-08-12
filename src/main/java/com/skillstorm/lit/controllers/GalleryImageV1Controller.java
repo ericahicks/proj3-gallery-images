@@ -41,12 +41,9 @@ public class GalleryImageV1Controller {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<GalleryImage> update(@RequestBody GalleryImage galleryImage, @PathVariable UUID id) {
+	public GalleryImage update(@RequestBody GalleryImage galleryImage, @PathVariable UUID id) {
 		galleryImage.setId(id);
-		galleryImage = service.update(galleryImage);
-		return galleryImage == null ? 
-				new ResponseEntity<>(null, HttpStatus.BAD_REQUEST)
-				: new ResponseEntity<>(galleryImage, HttpStatus.OK);
+		return service.update(galleryImage);
 	}
 	
 	@DeleteMapping("/{id}")
