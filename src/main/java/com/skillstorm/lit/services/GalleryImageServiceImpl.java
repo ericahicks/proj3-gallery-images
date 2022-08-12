@@ -33,29 +33,6 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 		}
 		return list;
 	}
-	
-	@Override
-	public List<GalleryImage> findAllGalleryImage() {
-		return repository.findAllGalleryImage();
-	}
-	
-	@Override
-	public
-	List<ListingDetails> findAllListingDetailsD() {
-		return repository.findAllListingDetailsD();
-	}
-
-	@Override
-	public List<GalleryImage> findByListingDetailsId(UUID id) {
-		//return repository.findByListingDetail(id);
-		return null;
-	}
-
-	@Override
-	public GalleryImage findById(UUID id) {
-		Optional<GalleryImage> image = repository.findById(id);
-		return image.isPresent() ? image.get() : null;
- 	}
 
 	@Override
 	public GalleryImage create(GalleryImage image) {
@@ -64,7 +41,7 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 	
 	@Override
 	public GalleryImage update(GalleryImage galleryImage) {
-		return repository.save(galleryImage);
+		return repository.findById(galleryImage.getId()).isPresent() ? repository.save(galleryImage) : null;
 	}
 
 	@Override

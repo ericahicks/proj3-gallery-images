@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,35 +35,18 @@ public class GalleryImageV1Controller {
 		return service.findAll();
 	}
 	
-	@GetMapping("/all")
-	public List<GalleryImage> findAllGalleryImage() {
-		return service.findAllGalleryImage();
-	}
-	
-	@GetMapping("/{id}")
-	public GalleryImage getGalleryImage(@PathVariable UUID id) {
-		return service.findById(id);
-	}
-	
-	@GetMapping("/listing-details/{id}")
-	public List<GalleryImage> getGalleryImagesForDetailsListing(UUID id) {
-		return service.findByListingDetailsId(id);
-	}
-	
-	@GetMapping("/listing-details")
-	public List<ListingDetails> getGalleryImagesListingDetails() {
-		return service.findAllListingDetailsD();
-	}
-	
 	@PostMapping
 	public GalleryImage create(@RequestBody GalleryImage image) {
 		return service.create(image);
 	}
 	
 	@PutMapping("/{id}")
-	public GalleryImage update(@RequestBody GalleryImage galleryImage, @PathVariable UUID id) {
+	public ResponseEntity<GalleryImage> update(@RequestBody GalleryImage galleryImage, @PathVariable UUID id) {
 		galleryImage.setId(id);
-		return service.update(galleryImage);
+		galleryImage = service.update(galleryImage);
+		return galleryImage == null ? 
+				new ResponseEntity<>(null, HttpStatus.BAD_REQUEST)
+				: new ResponseEntity<>(galleryImage, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
