@@ -20,8 +20,13 @@ public class ListingDetailsService {
 		return (List<ListingDetails>) repository.findAll();
 	}
 	
-	public ListingDetails findById(String id) {
+	public ListingDetails findById(UUID id) {
 		Optional<ListingDetails> details = repository.findById(id);
+		return details.isPresent() ? details.get() : null;
+	}
+	
+	public ListingDetails findByIdString(String id) {
+		Optional<ListingDetails> details = repository.findByIdString(id);
 		return details.isPresent() ? details.get() : null;
 	}
 

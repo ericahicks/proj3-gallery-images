@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +28,15 @@ public class ListingDetailsController {
 	}
 	
 	@GetMapping("{id}")
-	public ListingDetails getById(@PathVariable String id) {
-		return service.findById(id);
+	public ResponseEntity<ListingDetails> getById(@PathVariable UUID id) {
+		ListingDetails details = service.findById(id);
+		return new ResponseEntity<>(details, details == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 	}
+	
+//	@GetMapping("{id}")
+//	public ResponseEntity<ListingDetails> getById(@PathVariable String id) {
+//		ListingDetails details = service.findByIdString(id);
+//		return new ResponseEntity<>(details, details == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+//	}
 
 }

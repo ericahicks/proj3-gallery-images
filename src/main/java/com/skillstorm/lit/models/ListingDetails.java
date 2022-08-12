@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -16,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -24,6 +26,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -35,7 +38,9 @@ public class ListingDetails {
 	@Id
 	@GeneratedValue(generator = "LISTING_DETAILS_UUID")
 	@GenericGenerator(name = "LISTING_DETAILS_UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "LISTING_DETAILS_ID")
+//	@Column(name = "LISTING_DETAILS_ID")
+	@Column(name = "LISTING_DETAILS_ID", columnDefinition = "BINARY(16)")
+//	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private UUID id;
 
 	@Lob
@@ -75,7 +80,8 @@ public class ListingDetails {
 	/**
 	 * Max of 4
 	 */
-	@OneToMany(mappedBy = "listingDetail")
+	@OneToMany(mappedBy = "listingDetail", fetch = FetchType.LAZY)
+//	@JsonManagedReference
 	private Set<GalleryImage> galleryImages;
 
 	////////////////////////////////////////////////////////////////////////////////

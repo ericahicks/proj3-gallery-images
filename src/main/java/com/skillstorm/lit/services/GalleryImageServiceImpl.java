@@ -30,6 +30,17 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<GalleryImage> findAllGalleryImage() {
+		return repository.findAllGalleryImage();
+	}
+	
+	@Override
+	public
+	List<ListingDetails> findAllListingDetailsD() {
+		return repository.findAllListingDetailsD();
+	}
 
 	@Override
 	public List<GalleryImage> findByListingDetailsId(UUID id) {

@@ -31,6 +31,11 @@ public class GalleryImageV1Controller {
 		return service.findAll();
 	}
 	
+	@GetMapping("/all")
+	public List<GalleryImage> findAllGalleryImage() {
+		return service.findAllGalleryImage();
+	}
+	
 	@GetMapping("/{id}")
 	public GalleryImage getGalleryImage(@PathVariable String id) {
 		return service.findById(id);
@@ -39,6 +44,11 @@ public class GalleryImageV1Controller {
 	@GetMapping("/listing-details/{id}")
 	public List<GalleryImage> getGalleryImagesForDetailsListing(UUID id) {
 		return service.findByListingDetailsId(id);
+	}
+	
+	@GetMapping("/listing-details")
+	public List<ListingDetails> getGalleryImagesListingDetails() {
+		return service.findAllListingDetailsD();
 	}
 	
 	@PostMapping

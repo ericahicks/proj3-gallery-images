@@ -10,10 +10,13 @@ import com.skillstorm.lit.models.ListingDetails;
 
 public interface GalleryImageService {
 	
-	@Query("SELECT g.id, g.imageSrc, g.listingDetails FROM GalleryImage")
 	List<GalleryImage> findAll();
 	
+	List<GalleryImage> findAllGalleryImage();
+	
 	List<GalleryImage> findByListingDetailsId(UUID id);
+	
+	List<ListingDetails> findAllListingDetailsD();
 	
 	GalleryImage findById(String id);
 	
