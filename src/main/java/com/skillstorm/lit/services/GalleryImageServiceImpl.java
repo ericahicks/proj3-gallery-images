@@ -2,6 +2,7 @@ package com.skillstorm.lit.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -33,6 +34,28 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<GalleryImage> findAllGalleryImage() {
+		return repository.findAllGalleryImage();
+	}
+	
+	@Override
+	public
+	List<ListingDetails> findAllListingDetailsD() {
+		return repository.findAllListingDetailsD();
+	}
+
+	@Override
+	public List<GalleryImage> findByListingDetailsId(UUID id) {
+		return repository.findByListingDetail(id);
+	}
+
+	@Override
+	public GalleryImage findById(UUID id) {
+		Optional<GalleryImage> image = repository.findById(id);
+		return image.isPresent() ? image.get() : null;
+ 	}
 
 	@Override
 	public GalleryImage create(GalleryImage image) {

@@ -9,7 +9,15 @@ import com.skillstorm.lit.models.ListingDetails;
 
 public interface GalleryImageService {
 	
-	List<GalleryImage> findAll();
+List<GalleryImage> findAll();
+	
+	List<GalleryImage> findAllGalleryImage();
+	
+	List<GalleryImage> findByListingDetailsId(UUID id);
+	
+	List<ListingDetails> findAllListingDetailsD();
+	
+	GalleryImage findById(UUID id);
 	
 	GalleryImage create(GalleryImage image);
 	
