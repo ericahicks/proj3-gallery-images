@@ -46,7 +46,7 @@ public class GalleryImageV1Controller {
 	}
 	
 	@GetMapping("/listing-details/{id}")
-	public List<GalleryImage> getGalleryImagesForDetailsListing(UUID id) {
+	public List<GalleryImage> getGalleryImagesForDetailsListing(@PathVariable UUID id) {
 		return service.findByListingDetailsId(id);
 	}
 	
@@ -74,6 +74,13 @@ public class GalleryImageV1Controller {
 	@DeleteMapping
 	public void deleteAllFromDetails(@RequestBody ListingDetails listingDetail) {
 		service.deleteAllFromDetails(listingDetail);
+	}
+	
+	@DeleteMapping("/listing-details/{id}")
+	public void deleteByDetailId(@PathVariable UUID id) {
+		ListingDetails detail = new ListingDetails();
+		detail.setId(id);
+		service.deleteAllFromDetails(detail);
 	}
 	
 }
