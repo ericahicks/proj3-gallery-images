@@ -1,17 +1,21 @@
 package com.skillstorm.lit.services;
 
 import java.util.List;
+import java.util.UUID;
+
 
 import com.skillstorm.lit.models.GalleryImage;
+import com.skillstorm.lit.models.ListingDetails;
 
 public interface GalleryImageService {
 	
 	List<GalleryImage> findAll();
 	
-	List<GalleryImage> findByListingDetailsId();
+	GalleryImage create(GalleryImage image);
 	
-	GalleryImage findById();
+	GalleryImage update(GalleryImage galleryImage);
 	
-	GalleryImage create();
-
+	void deleteById(UUID id); 
+	
+	void deleteAllFromDetails(ListingDetails listingDetail);
 }
