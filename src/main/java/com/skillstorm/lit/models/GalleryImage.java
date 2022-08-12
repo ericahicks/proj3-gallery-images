@@ -2,10 +2,8 @@ package com.skillstorm.lit.models;
 
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,8 +24,8 @@ public class GalleryImage {
 	@Id
 	@GeneratedValue(generator = "LISTING_GALLERY_IMAGE_UUID")
 	@GenericGenerator(name = "LISTING_GALLERY_IMAGE_UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "LISTING_GALLERY_IMAGE_ID", columnDefinition = "BINARY(16)")
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
+	@Column(name = "LISTING_GALLERY_IMAGE_ID")
+	@Type(type = "uuid-char")
 	private UUID id;
 
 	@Column(name = "IMAGE_SRC")
@@ -49,10 +44,8 @@ public class GalleryImage {
 	 * Browse page
 	 */
 	@ManyToOne
-	@JoinColumn(name = "LISTING_DETAIL_ID", columnDefinition = "BINARY(16)")
+	@JoinColumn(name = "LISTING_DETAIL_ID")
 	@JsonIdentityReference(alwaysAsId = true)
-//	@JsonBackReference
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private ListingDetails listingDetail;
 
 	public GalleryImage() {

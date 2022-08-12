@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,10 +24,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -40,9 +37,8 @@ public class ListingDetails {
 	@Id
 	@GeneratedValue(generator = "LISTING_DETAILS_UUID")
 	@GenericGenerator(name = "LISTING_DETAILS_UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//	@Column(name = "LISTING_DETAILS_ID")
-	@Column(name = "LISTING_DETAILS_ID", columnDefinition = "BINARY(16)")
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
+	@Column(name = "LISTING_DETAILS_ID")
+	@Type(type = "uuid-char")
 	private UUID id;
 
 	@Lob
