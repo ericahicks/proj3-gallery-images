@@ -21,8 +21,12 @@ import com.skillstorm.lit.models.GalleryImage;
 import com.skillstorm.lit.models.ListingDetails;
 import com.skillstorm.lit.services.GalleryImageService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/gallery/v1")
+@Tag(name = "Gallery Image API", description = "A place to look up the urls for product images")
 public class GalleryImageV1Controller {
 	private static final Logger LOG = LoggerFactory.getLogger(GalleryImageV1Controller.class);
 	
@@ -30,22 +34,26 @@ public class GalleryImageV1Controller {
 	GalleryImageService service;
 	
 	@GetMapping
+	@Operation(summary = "Find all gallery images for all products.", description = "An API endpoint to find all gallery images saved for all products. Does not support pagination at this time.")
 	public List<GalleryImage> getAllGalleryImages() {
 		LOG.trace("\nGetting all Gallery Images");
 		return service.findAll();
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(summary = "Find gallery image by id.", description = "An API endpoint to find a gallery image given its uuid.")	
 	public GalleryImage getGalleryImage(@PathVariable UUID id) {
 		return service.findById(id);
 	}
 	
 	@GetMapping("/listing-details/{id}")
+	@Operation(summary = "Find all gallery images for a given product.", description = "An API endpoint to find all gallery images saved for a given product. There will be at most 5 images per product.")
 	public List<GalleryImage> getGalleryImagesForDetailsListing(@PathVariable UUID id) {
 		return service.findByListingDetailsId(id);
 	}
 	
 	@PostMapping
+	@Operation(summary = "Save gallery image.", description = "An API enpoint to create a gallery image mapping of the product id to the gallery image relative filepath.")
 	public ResponseEntity<GalleryImage> create(@RequestBody GalleryImage image) {
 		image = service.create(image);
 		return new ResponseEntity<>(image, image == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
