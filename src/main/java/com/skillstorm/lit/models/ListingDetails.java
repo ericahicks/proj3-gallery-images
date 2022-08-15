@@ -39,9 +39,7 @@ public class ListingDetails {
 	@Id
 	@GeneratedValue(generator = "LISTING_DETAILS_UUID")
 	@GenericGenerator(name = "LISTING_DETAILS_UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//	@Column(name = "LISTING_DETAILS_ID")
 	@Column(name = "LISTING_DETAILS_ID", columnDefinition = "BINARY(16)")
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private UUID id;
 
 	@Lob
@@ -82,7 +80,6 @@ public class ListingDetails {
 	 * Max of 4
 	 */
 	@OneToMany(mappedBy = "listingDetail", fetch = FetchType.LAZY)
-//	@JsonManagedReference
 	private Set<GalleryImage> galleryImages;
 
 	////////////////////////////////////////////////////////////////////////////////

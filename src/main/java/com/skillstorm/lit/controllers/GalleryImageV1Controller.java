@@ -17,8 +17,11 @@ import com.skillstorm.lit.models.GalleryImage;
 import com.skillstorm.lit.models.ListingDetails;
 import com.skillstorm.lit.services.GalleryImageService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/gallery/v1")
+@Tag(name="Gallery Images Controller", description = "A place to look up all the images included in a give products")
 public class GalleryImageV1Controller {
 	private static final Logger LOG = LoggerFactory.getLogger(GalleryImageV1Controller.class);
 	

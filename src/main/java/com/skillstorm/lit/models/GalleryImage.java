@@ -26,7 +26,6 @@ public class GalleryImage {
 	@GeneratedValue(generator = "LISTING_GALLERY_IMAGE_UUID")
 	@GenericGenerator(name = "LISTING_GALLERY_IMAGE_UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "LISTING_GALLERY_IMAGE_ID", columnDefinition = "BINARY(16)")
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private UUID id;
 
 	@Column(name = "IMAGE_SRC")
@@ -47,8 +46,6 @@ public class GalleryImage {
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID", columnDefinition = "BINARY(16)")
 	@JsonIdentityReference(alwaysAsId = true)
-//	@JsonBackReference
-//	@Type(type="org.hibernate.type.UUIDBinaryType")
 	private ListingDetails listingDetail;
 
 	public GalleryImage() {
