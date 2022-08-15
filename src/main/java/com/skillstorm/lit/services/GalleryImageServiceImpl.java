@@ -1,6 +1,5 @@
 package com.skillstorm.lit.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.skillstorm.lit.controllers.GalleryImageV1Controller;
 import com.skillstorm.lit.data.GalleryImageRepository;
 import com.skillstorm.lit.models.GalleryImage;
 import com.skillstorm.lit.models.ListingDetails;
