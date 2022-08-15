@@ -21,29 +21,14 @@ import com.skillstorm.lit.models.ListingDetails;
 @Service
 @Transactional
 public class GalleryImageServiceImpl implements GalleryImageService {
-	private static final Logger LOG = LoggerFactory.getLogger(GalleryImageV1Controller.class);
+	private static final Logger LOG = LoggerFactory.getLogger(GalleryImageServiceImpl.class);
+
 	@Autowired
 	GalleryImageRepository repository;
 
 	@Override
 	public List<GalleryImage> findAll() {
-		Iterable<GalleryImage> itr = repository.findAll();
-		List<GalleryImage> list = new ArrayList<>();
-		for (GalleryImage image : itr) {
-			list.add(image);
-		}
-		return list;
-	}
-	
-	@Override
-	public List<GalleryImage> findAllGalleryImage() {
-		return repository.findAllGalleryImage();
-	}
-	
-	@Override
-	public
-	List<ListingDetails> findAllListingDetailsD() {
-		return repository.findAllListingDetailsD();
+		return (List<GalleryImage>) repository.findAll();
 	}
 
 	@Override
@@ -55,39 +40,39 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 	public GalleryImage findById(UUID id) {
 		Optional<GalleryImage> image = repository.findById(id);
 		return image.isPresent() ? image.get() : null;
- 	}
+	}
 
 	@Override
 	public GalleryImage create(GalleryImage image) {
 		return repository.save(image);
 	}
-	
+
 	@Override
 	public GalleryImage update(GalleryImage galleryImage) {
-		if (repository.findById(galleryImage.getId()).isPresent() ) {
-			return repository.save(galleryImage); 
-	    } else {
-	    	throw new EntityNotFoundException();
-	    }
+		if (repository.findById(galleryImage.getId()).isPresent()) {
+			return repository.save(galleryImage);
+		} else {
+			throw new EntityNotFoundException();
+		}
 	}
 
 	@Override
 	public void deleteById(UUID id) {
-		if (repository.findById(id).isPresent() ) {
-			repository.deleteById(id);   
-	    } else {
-	    	throw new EntityNotFoundException();
-	    }
-		
+		if (repository.findById(id).isPresent()) {
+			repository.deleteById(id);
+		} else {
+			throw new EntityNotFoundException();
+		}
+
 	}
 
 	@Override
 	public void deleteAllFromDetails(ListingDetails listingDetail) {
-		if (repository.findById(listingDetail.getId()).isPresent() ) {
-			repository.deleteByListingDetail(listingDetail);   
-	    } else {
-	    	throw new EntityNotFoundException();
-	    }
+		if (repository.findById(listingDetail.getId()).isPresent()) {
+			repository.deleteByListingDetail(listingDetail);
+		} else {
+			throw new EntityNotFoundException();
+		}
 	}
 
 }

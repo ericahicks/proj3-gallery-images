@@ -35,11 +35,6 @@ public class GalleryImageV1Controller {
 		return service.findAll();
 	}
 	
-	@GetMapping("/all")
-	public List<GalleryImage> findAllGalleryImage() {
-		return service.findAllGalleryImage();
-	}
-	
 	@GetMapping("/{id}")
 	public GalleryImage getGalleryImage(@PathVariable UUID id) {
 		return service.findById(id);
@@ -50,14 +45,10 @@ public class GalleryImageV1Controller {
 		return service.findByListingDetailsId(id);
 	}
 	
-	@GetMapping("/listing-details")
-	public List<ListingDetails> getGalleryImagesListingDetails() {
-		return service.findAllListingDetailsD();
-	}
-	
 	@PostMapping
-	public GalleryImage create(@RequestBody GalleryImage image) {
-		return service.create(image);
+	public ResponseEntity<GalleryImage> create(@RequestBody GalleryImage image) {
+		image = service.create(image);
+		return new ResponseEntity<>(image, image == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")

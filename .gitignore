@@ -1,0 +1,73 @@
+# Compiled class file
+*.class
+target/test-classes
+target/classes/com/
+target/classes/application-local.yml
+target/classes/backup.md
+target/classes/META-INF
+target/
+
+# Log file
+*.log
+
+# Environment files
+.env
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+*.jar
+*.war
+*.ear
+*.class
+
+# eclipse specific git ignore
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.factorypath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+.vscode/
+.settings/
+.project
+.classpath
+.vscode/launch.json
+/target
+
+# Properties files
+application.yml
+application-dev.yml
+
