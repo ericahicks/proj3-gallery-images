@@ -16,9 +16,12 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 @Table(name = "LISTING_GALLERY_IMAGES")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Schema(name = "Gallery Image")
 public class GalleryImage {
 
 	@Id
@@ -26,9 +29,11 @@ public class GalleryImage {
 	@GenericGenerator(name = "LISTING_GALLERY_IMAGE_UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "LISTING_GALLERY_IMAGE_ID")
 	@Type(type = "uuid-char")
+	@Schema(description = "Image Id")
 	private UUID id;
 
 	@Column(name = "IMAGE_SRC")
+	@Schema(description = "Image relative filepath")
 	private String imageSrc;
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +51,7 @@ public class GalleryImage {
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID")
 	@JsonIdentityReference(alwaysAsId = true)
+	@Schema(description = "Product details of the product in the image")
 	private ListingDetails listingDetail;
 
 	public GalleryImage() {
