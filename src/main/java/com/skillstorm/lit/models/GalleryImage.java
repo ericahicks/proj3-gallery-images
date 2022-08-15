@@ -18,12 +18,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * GalleryImage is an entity used to map a product to its images
+ * in the database. Note, the images themselves are not saved in
+ * the database. They are saved elsewhere in cloud storage. See
+ * {@link com.skillstorm.congo.services.S3BucketStorageImpl}. The
+ * mapping uses the image filename (and relative path not an absolute path).
+ *
+ */
 @Entity
 @Table(name = "LISTING_GALLERY_IMAGES")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(name = "Gallery Image")
 public class GalleryImage {
 
+	/**
+	 * The gallery image's id. In the database is stored as a varchar
+	 * containing a uuid (128-bit globally unique identifier) of 36 characters
+	 * (32-digits ########-####-####-####-############)
+	 */
 	@Id
 	@GeneratedValue(generator = "LISTING_GALLERY_IMAGE_UUID")
 	@GenericGenerator(name = "LISTING_GALLERY_IMAGE_UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -32,6 +45,9 @@ public class GalleryImage {
 	@Schema(description = "Image Id")
 	private UUID id;
 
+	/**
+	 * Filename of the image in cloud storage.
+	 */
 	@Column(name = "IMAGE_SRC")
 	@Schema(description = "Image relative filepath")
 	private String imageSrc;
