@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -23,6 +25,7 @@ public class GalleryImage {
 	@GeneratedValue(generator = "LISTING_GALLERY_IMAGE_UUID")
 	@GenericGenerator(name = "LISTING_GALLERY_IMAGE_UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "LISTING_GALLERY_IMAGE_ID")
+	@Type(type = "uuid-char")
 	private UUID id;
 
 	@Column(name = "IMAGE_SRC")
@@ -42,6 +45,7 @@ public class GalleryImage {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID")
+	@JsonIdentityReference(alwaysAsId = true)
 	private ListingDetails listingDetail;
 
 	public GalleryImage() {

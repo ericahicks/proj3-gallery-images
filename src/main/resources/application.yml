@@ -1,7 +1,17 @@
-
+spring:
+  application:
+    name: image-gallery-api # Eureka uses this to put a label on a service
+  datasource:
+    url: jdbc:mysql://localhost:3306/imagegallery
+    username: root
+    password: sesame80
+  jpa:
+    hibernate:
+      ddl-auto: none
+      
 logging:
   level:
     org:
       springframework:
-        web: DEBUG
+        web: TRACE
 
