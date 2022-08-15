@@ -1,37 +1,19 @@
 package com.skillstorm.lit.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.skillstorm.lit.data.ListingDetailsRepository;
 import com.skillstorm.lit.models.ListingDetails;
 
-@Service
-public class ListingDetailsService {
+public interface ListingDetailsService {
 	
-	@Autowired
-	ListingDetailsRepository repository;
+	List<ListingDetails> findAll();
 	
-	public List<ListingDetails> findAll() {
-		return (List<ListingDetails>) repository.findAll();
-	}
+	ListingDetails findById(UUID id);
 	
-	public ListingDetails findById(UUID id) {
-		Optional<ListingDetails> details = repository.findById(id);
-		return details.isPresent() ? details.get() : null;
-	}
+	ListingDetails save(ListingDetails detail);
 	
-	public ListingDetails findByIdString(String id) {
-		Optional<ListingDetails> details = repository.findByIdString(id);
-		return details.isPresent() ? details.get() : null;
-	}
+	ListingDetails update(ListingDetails detail, UUID id);
 	
-	public ListingDetails save(ListingDetails detail) {
-		return repository.save(detail);
-	}
-	
+	void delete(UUID id);
 }
