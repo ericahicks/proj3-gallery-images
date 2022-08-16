@@ -12,6 +12,8 @@ public interface GalleryImageService {
 
 	List<GalleryImage> findByListingDetailsId(UUID id);
 
+	List<GalleryImage> findByListingDetail(ListingDetails listingDetail);
+	
 	GalleryImage findById(UUID id);
 
 	GalleryImage create(GalleryImage image);
@@ -21,4 +23,5 @@ public interface GalleryImageService {
 	void deleteById(UUID id);
 
 	void deleteAllFromDetails(ListingDetails listingDetail);
+
 }

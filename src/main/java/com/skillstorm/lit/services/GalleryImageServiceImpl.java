@@ -33,6 +33,11 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 	public List<GalleryImage> findByListingDetailsId(UUID id) {
 		return repository.findByListingDetail(id);
 	}
+	
+	@Override
+	public List<GalleryImage> findByListingDetail(ListingDetails listingDetail) {
+		return repository.findByListingDetail(listingDetail);
+	}
 
 	@Override
 	public GalleryImage findById(UUID id) {
@@ -66,7 +71,8 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 
 	@Override
 	public void deleteAllFromDetails(ListingDetails listingDetail) {
-		if (repository.findById(listingDetail.getId()).isPresent()) {
+		List<GalleryImage> images = repository.findByListingDetail(listingDetail.getId());
+		if (images != null && images.size() > 0) {
 			repository.deleteByListingDetail(listingDetail);
 		} else {
 			throw new EntityNotFoundException();
