@@ -71,11 +71,10 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 
 	@Override
 	public void deleteAllFromDetails(ListingDetails listingDetail) {
-		List<GalleryImage> images = repository.findByListingDetail(listingDetail.getId());
-		if (images != null && images.size() > 0) {
-			repository.deleteByListingDetail(listingDetail);
-		} else {
-			throw new EntityNotFoundException();
+		List<GalleryImage> imageList = this.findByListingDetail(listingDetail);
+		repository.deleteByListingDetail(listingDetail);
+		for (GalleryImage image : imageList) {
+//			imageStorageService.deleteImage(fileName);
 		}
 	}
 

@@ -55,7 +55,11 @@ public class GalleryImageV1Controller {
 	@PostMapping
 	@Operation(summary = "Save gallery image.", description = "An API enpoint to create a gallery image mapping of the product id to the gallery image relative filepath.")
 	public ResponseEntity<GalleryImage> create(@RequestBody GalleryImage image) {
-		image = service.create(image);
+		try {
+			image = service.create(image);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>(image, image == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
 	}
 	

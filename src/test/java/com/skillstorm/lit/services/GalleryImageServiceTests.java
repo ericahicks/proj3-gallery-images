@@ -1,11 +1,15 @@
 package com.skillstorm.lit.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockitoSession;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +41,7 @@ public class GalleryImageServiceTests {
 	GalleryImageRepository repository;
 	
 	private GalleryImage image;
-	
+	private ListingDetails detail;
 	
 	@BeforeEach
 	public void setup() {
@@ -45,11 +49,73 @@ public class GalleryImageServiceTests {
 		image.setImageSrc("image source");
 		image.setId(UUID.fromString("638cc430-511a-490f-93be-48ee957bf731"));
 		
-		ListingDetails detail = new ListingDetails();
+		detail = new ListingDetails();
 		detail.setId(UUID.fromString("638cc430-511a-490f-93be-48ee957bf890"));
 		image.setListingDetail(detail);
 	}
 	
+	@Test
+	public void testFindByIdExists() {
+		Mockito.when(repository.findById(image.getId())).thenReturn(Optional.of(image));
+		
+		GalleryImage foundImage = service.findById(image.getId());
+		
+		assertThat(foundImage).usingRecursiveComparison().isEqualTo(image);
+		verify(repository, times(1)).findById(image.getId());
+	}
+	
+	@Test
+	public void testFindByIdNotExists() {
+		Mockito.when(repository.findById(image.getId())).thenReturn(Optional.empty());
+		
+		GalleryImage foundImage = service.findById(image.getId());
+		
+		assertThat(foundImage).isNull();
+		
+		verify(repository, times(1)).findById(image.getId());
+	}
+	
+	@Test
+	public void testFindByDetailsExists() {
+		List<GalleryImage> images = new ArrayList<>();
+		images.add(image);
+		Mockito.when(repository.findByListingDetail(detail)).thenReturn(images);
+		
+		List<GalleryImage> foundImages = service.findByListingDetail(detail);
+		
+		assertThat(foundImages).isNotNull().hasSize(1).contains(image);
+		verify(repository, times(1)).findByListingDetail(detail);
+	}
+	
+	@Test
+	public void testFindByDetailsIdExists() {
+		List<GalleryImage> images = new ArrayList<>();
+		images.add(image);
+		Mockito.when(repository.findByListingDetail(detail.getId())).thenReturn(images);
+		
+		List<GalleryImage> foundImages = service.findByListingDetailsId(detail.getId());
+		
+		assertThat(foundImages).isNotNull().hasSize(1).contains(image);
+		verify(repository, times(1)).findByListingDetail(detail.getId());
+	}
+	
+	@Test
+	public void testCreateImage() {
+		// A GalleryImage to save that does not yet have an id set
+		GalleryImage imageToCreate = new GalleryImage();
+		imageToCreate.setImageSrc(image.getImageSrc());
+		imageToCreate.setListingDetail(detail);
+		
+		Mockito.when(repository.save(any())).thenReturn(image);
+		
+		GalleryImage createdImage = service.create(imageToCreate);
+		
+		assertThat(createdImage.getId()).isNotNull();
+		assertThat(createdImage.getId()).isNotEqualTo(imageToCreate.getId());
+		assertThat(imageToCreate).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(createdImage);
+		
+		verify(repository, times(1)).save(imageToCreate);
+	}
 	
 	@Test
 	public void testUpdateImageFound() {
@@ -112,7 +178,7 @@ public class GalleryImageServiceTests {
 		ListingDetails detail = image.getListingDetail();
 		
 		List<GalleryImage> imageList = Arrays.asList(image, image2);
-
+		
 		Mockito.doNothing().when(repository).deleteByListingDetail(detail);
 		Mockito.when(repository.findByListingDetail(detail)).thenReturn(imageList);
 		
