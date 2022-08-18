@@ -34,8 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillstorm.lit.models.ListingDetails;
 import com.skillstorm.lit.services.ListingDetailsService;
 
-@WebMvcTest(ListingDetailsController.class)
-public class ListingDetailsControllerTest {
+@WebMvcTest(ListingDetailsV1Controller.class)
+public class ListingDetailsV1ControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

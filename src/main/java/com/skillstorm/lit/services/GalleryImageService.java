@@ -9,13 +9,11 @@ import com.skillstorm.lit.models.ListingDetails;
 public interface GalleryImageService {
 
 	List<GalleryImage> findAll();
-
+	
 	List<GalleryImage> findByListingDetailsId(UUID id);
-
-	List<GalleryImage> findByListingDetail(ListingDetails listingDetail);
 	
 	GalleryImage findById(UUID id);
-
+	
 	GalleryImage create(GalleryImage image);
 
 	GalleryImage update(GalleryImage galleryImage);
@@ -25,5 +23,4 @@ public interface GalleryImageService {
 	void deleteAllFromDetails(ListingDetails listingDetail);
 
 	void deleteAll();
-
 }

@@ -27,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -54,12 +55,6 @@ public class GalleryImageV1ControllerIntegrationTest {
 	@Autowired
 	private ListingDetailsService detailService;
 	
-	@BeforeEach
-	public void setup() {
-		imageService.deleteAll();
-	}
-	
-	
 	@Test
 	public void testFindById() throws Exception {
 		// put a image in the database
@@ -82,6 +77,10 @@ public class GalleryImageV1ControllerIntegrationTest {
 	            .accept("application/json"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(mapper.writeValueAsString(image)));
+		
+
+		imageService.deleteById(image.getId());
+		detailService.delete(detail.getId());
 	}
 	
 	@Test
@@ -111,7 +110,6 @@ public class GalleryImageV1ControllerIntegrationTest {
 		expected.add(image);
 		expected.add(image2);
 		
-		
 		// check that it is there using mock GET request
 		String url = "/gallery/v1/";
 		
@@ -122,6 +120,10 @@ public class GalleryImageV1ControllerIntegrationTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
 			.andExpect(content().string(mapper.writeValueAsString(expected)));
+
+		imageService.deleteById(image.getId());
+		imageService.deleteById(image2.getId());
+		detailService.delete(detail.getId());
 	}
 	
 	@Test 
@@ -156,7 +158,11 @@ public class GalleryImageV1ControllerIntegrationTest {
 //					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //					.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
 //					.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-//					.andExpect(content().string(mapper.writeValueAsString(images)));
+//					.andExpect(content().string(mapper.writeValueAsString(images)))
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
+		imageService.deleteById(image2.getId());
 	}
 	
 	@Test
@@ -176,6 +182,9 @@ public class GalleryImageV1ControllerIntegrationTest {
 				.andExpect(status().isCreated())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id", UUID.class).isNotEmpty());
 		// clean up database
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
 	}
 	
 	@Test
@@ -213,6 +222,10 @@ public class GalleryImageV1ControllerIntegrationTest {
 		// image matches the one in the db after updating
 		foundImage = this.imageService.findById(image.getId());
 		assertEquals(foundImage.getImageSrc(), image.getImageSrc());
+		
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
 	}
 	
 	@Test
@@ -234,6 +247,10 @@ public class GalleryImageV1ControllerIntegrationTest {
 		
 		// image should no longer be in database
 		assertNull(this.imageService.findById(image.getId()));
+		
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
 	}
 	
 	
@@ -263,6 +280,11 @@ public class GalleryImageV1ControllerIntegrationTest {
 		
 		// should be no images in db after delete
 		assertTrue(this.imageService.findAll().size() == 0);
+		
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
+		imageService.deleteById(image2.getId());
 	}
 	
 	@Test
@@ -280,7 +302,7 @@ public class GalleryImageV1ControllerIntegrationTest {
 
 		
 		// should be two images in db
-		assertTrue(this.imageService.findAll().size() == 2);
+		assertThat(this.imageService.findAll()).hasSize(2);
 		
 		// perform delete
 		String url = "/gallery/v1/listing-details/" + detail.getId();
@@ -289,5 +311,9 @@ public class GalleryImageV1ControllerIntegrationTest {
 		
 		// should be no images in db after delete
 		assertTrue(this.imageService.findAll().size() == 0);
+
+		detailService.delete(detail.getId());
+		imageService.deleteById(image.getId());
+		imageService.deleteById(image2.getId());
 	}
 }

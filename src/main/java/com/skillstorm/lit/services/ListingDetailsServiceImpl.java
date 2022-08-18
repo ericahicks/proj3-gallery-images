@@ -59,5 +59,10 @@ public class ListingDetailsServiceImpl implements ListingDetailsService {
 			throw new EntityNotFoundException();
 		}
 	}
+	
+	@Override
+	public void deleteAll() {
+		repository.deleteAll();
+	}
 
 }

@@ -76,18 +76,6 @@ public class GalleryImageServiceTests {
 	}
 	
 	@Test
-	public void testFindByDetailsExists() {
-		List<GalleryImage> images = new ArrayList<>();
-		images.add(image);
-		Mockito.when(repository.findByListingDetail(detail)).thenReturn(images);
-		
-		List<GalleryImage> foundImages = service.findByListingDetail(detail);
-		
-		assertThat(foundImages).isNotNull().hasSize(1).contains(image);
-		verify(repository, times(1)).findByListingDetail(detail);
-	}
-	
-	@Test
 	public void testFindByDetailsIdExists() {
 		List<GalleryImage> images = new ArrayList<>();
 		images.add(image);
@@ -180,12 +168,12 @@ public class GalleryImageServiceTests {
 		List<GalleryImage> imageList = Arrays.asList(image, image2);
 		
 		Mockito.doNothing().when(repository).deleteByListingDetail(detail);
-		Mockito.when(repository.findByListingDetail(detail)).thenReturn(imageList);
+		Mockito.when(repository.findByListingDetail(detail.getId())).thenReturn(imageList);
 		
 		service.deleteAllFromDetails(detail);
 		
 		verify(repository, times(1)).deleteByListingDetail(detail);
-		verify(repository, times(1)).findByListingDetail(detail);
+		verify(repository, times(1)).findByListingDetail(detail.getId());
 		
 	}
 }

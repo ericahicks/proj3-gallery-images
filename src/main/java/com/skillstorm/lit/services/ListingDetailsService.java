@@ -16,4 +16,6 @@ public interface ListingDetailsService {
 	ListingDetails update(ListingDetails detail, UUID id);
 	
 	void delete(UUID id);
+
+	void deleteAll();
 }

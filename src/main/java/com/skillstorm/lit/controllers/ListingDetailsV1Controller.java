@@ -17,15 +17,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.lit.models.ListingDetails;
+import com.skillstorm.lit.services.GalleryImageService;
 import com.skillstorm.lit.services.ListingDetailsService;
-
 
 @RestController
 @RequestMapping("/listing-details/v1")
-public class ListingDetailsController {
+public class ListingDetailsV1Controller {
 	
 	@Autowired
 	ListingDetailsService service;
+
+	@Autowired
+	GalleryImageService imageService;
 	
 	@GetMapping
 	public List<ListingDetails> getAllListingDetails() {
@@ -51,7 +54,11 @@ public class ListingDetailsController {
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable UUID id) {
-		service.delete(id);
+		// remove all images related to this listing details
+		ListingDetails detail = new ListingDetails();
+		detail.setId(id); // given id but need detail obj so creating one
+		imageService.deleteAllFromDetails(detail);
+		// remove the listing details itself
 	}
 
 }

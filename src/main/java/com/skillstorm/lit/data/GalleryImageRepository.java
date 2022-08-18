@@ -3,6 +3,8 @@ package com.skillstorm.lit.data;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -15,9 +17,8 @@ public interface GalleryImageRepository extends CrudRepository<GalleryImage, UUI
 
 	@Query("SELECT g FROM GalleryImage g WHERE g.listingDetail.id = ?1")
 	List<GalleryImage> findByListingDetail(UUID id);
-
-	List<GalleryImage> findByListingDetail(ListingDetails listingDetail);
-
+	
+	@Transactional
 	void deleteByListingDetail(ListingDetails listingDetail);
 
 }
