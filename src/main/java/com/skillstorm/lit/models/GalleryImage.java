@@ -66,7 +66,7 @@ public class GalleryImage {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "LISTING_DETAIL_ID")
-	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIdentityReference(alwaysAsId = false)
 	@Schema(description = "Product details of the product in the image")
 	private ListingDetails listingDetail;
 

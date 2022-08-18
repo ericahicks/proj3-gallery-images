@@ -39,7 +39,7 @@ public class ListingDetailsServiceImpl implements ListingDetailsService {
 
 	@Override
 	public ListingDetails update(ListingDetails detail, UUID id) {
-		LOG.debug("===================================================\n" + 
+		LOG.info("===================================================\n" + 
 	              "===================================================\n" +
 				  "updating ListingDetails entity with id = " + id +
 				  "===================================================");

@@ -77,5 +77,10 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 //			imageStorageService.deleteImage(fileName);
 		}
 	}
+	
+	@Override
+	public void deleteAll() {
+		repository.deleteAll();
+	}
 
 }

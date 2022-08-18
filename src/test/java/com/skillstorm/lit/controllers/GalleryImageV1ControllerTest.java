@@ -144,7 +144,7 @@ public class GalleryImageV1ControllerTest {
 	            .accept("application/json"))
 				.andReturn().getResponse();
 		
-		assertThat(response.getStatus()).isEqualTo(500); // why does HttpStatus.INTERNAL_SERVER_ERROR cause test to fail?
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value()); // why does HttpStatus.INTERNAL_SERVER_ERROR cause test to fail?
 		assertThat(response.getContentAsString()).isEmpty();
 		
 		verify(service, times(1)).create(any());

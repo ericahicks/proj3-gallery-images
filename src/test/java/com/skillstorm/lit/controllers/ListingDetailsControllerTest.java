@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillstorm.lit.models.ListingDetails;
@@ -60,6 +63,72 @@ public class ListingDetailsControllerTest {
 		details.setMaterial("Synthetic fur and cotton stuffing.");
 		details.setWeightDescription("4oz");
 		details.setReleaseDate(new Date(System.currentTimeMillis()));
+	}
+	
+	@Test
+	public void testGetDetailsById() throws Exception {
+		Mockito.when(service.findById(any())).thenReturn(details);
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url + id)
+				        .contentType(MediaType.APPLICATION_JSON)
+				        .content(mapper.writeValueAsString(details))
+				        .accept(MediaType.APPLICATION_JSON)
+				).andExpect(status().isOk())
+				 .andExpect(content().string(mapper.writeValueAsString(details)));
+		
+		verify(service, times(1)).findById(any());
+	}
+	
+	@Test
+	public void testGetDetailsByIdNotFound() throws Exception {
+		Mockito.when(service.findById(any())).thenReturn(null);
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url + id)
+				        .contentType(MediaType.APPLICATION_JSON)
+				        .content(mapper.writeValueAsString(details))
+				        .accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound())
+				.andExpect(content().string(""));
+		
+		verify(service, times(1)).findById(any());
+	}
+	
+	@Test
+	public void testGetAllDetails() throws Exception {
+		List<ListingDetails> listDetails = new ArrayList<>();
+		listDetails.add(details);
+		Mockito.when(service.findAll()).thenReturn(listDetails);
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+				        .contentType(MediaType.APPLICATION_JSON)
+				        .content(mapper.writeValueAsString(listDetails))
+				        .accept(MediaType.APPLICATION_JSON)
+				).andExpect(status().isOk())
+				 .andExpect(content().string(mapper.writeValueAsString(listDetails)));
+		
+		verify(service, times(1)).findAll();
+	}
+	
+	@Test 
+	public void testCreate() throws Exception {
+		Mockito.when(service.save(any())).thenReturn(details);
+		
+		// Details to save
+		ListingDetails detailsToSave = new ListingDetails();
+		detailsToSave.setDescription(details.getDescription());
+		detailsToSave.setMaterial(details.getMaterial());
+		detailsToSave.setWeightDescription(details.getWeightDescription());
+		detailsToSave.setReleaseDate(details.getReleaseDate());
+		
+		MockHttpServletResponse response = this.mockMvc
+		        .perform(MockMvcRequestBuilders.post(url)
+		        		.contentType(MediaType.APPLICATION_JSON)
+		        		.content(mapper.writeValueAsString(detailsToSave))
+		        		.accept(MediaType.APPLICATION_JSON))
+		        .andExpect(status().isCreated()).andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+		assertThat(response.getContentAsString()).isEqualTo(mapper.writeValueAsString(details));
 	}
 
 	@Test

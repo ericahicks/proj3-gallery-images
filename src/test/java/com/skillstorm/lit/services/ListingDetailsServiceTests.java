@@ -1,5 +1,6 @@
 package com.skillstorm.lit.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,6 +8,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,6 +53,58 @@ public class ListingDetailsServiceTests {
 		details.setMaterial("Synthetic fur and cotton stuffing.");
 		details.setWeightDescription("4oz");
 		details.setReleaseDate(new Date(System.currentTimeMillis()));
+	}
+	
+	@Test
+	public void testFindByIdExists() {
+		Mockito.when(repository.findById(details.getId())).thenReturn(Optional.of(details));
+		
+		ListingDetails foundDetails = service.findById(id);
+		
+		assertThat(foundDetails).usingRecursiveComparison().isEqualTo(details);
+		
+		verify(repository, times(1)).findById(id);
+	}
+	
+	@Test
+	public void testFindByIdNotExists() {
+		Mockito.when(repository.findById(details.getId())).thenReturn(Optional.empty());
+		
+		ListingDetails foundDetails = service.findById(id);
+		
+		assertThat(foundDetails).isNull();
+		
+		verify(repository, times(1)).findById(id);
+	}
+	
+	@Test
+	public void testFindAllExists() {
+		List<ListingDetails> allDetails = new ArrayList<>();
+		allDetails.add(details);
+		
+		Mockito.when(repository.findAll()).thenReturn(allDetails);
+		
+		List<ListingDetails> foundDetails = service.findAll();
+		
+		assertThat(foundDetails).isNotNull().hasSize(1).contains(details);
+		verify(repository, times(1)).findAll();
+	}
+	
+	@Test
+	public void testCreate() {
+		// ListingDetail to save that does not yet have an id set
+		ListingDetails detailsToCreate = new ListingDetails();
+		details.setDescription(details.getDescription());
+		details.setMaterial(details.getMaterial());
+		details.setWeightDescription(details.getWeightDescription());
+		details.setReleaseDate(details.getReleaseDate());
+		
+		Mockito.when(repository.save(any())).thenReturn(details);
+		
+		ListingDetails createdDetails = service.save(detailsToCreate);
+		
+		assertThat(createdDetails.getId()).isNotNull();
+		assertThat(createdDetails.getId()).isNotEqualTo(detailsToCreate.getId());
 	}
 	
 	@Test

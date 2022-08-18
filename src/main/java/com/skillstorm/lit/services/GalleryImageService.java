@@ -24,4 +24,6 @@ public interface GalleryImageService {
 
 	void deleteAllFromDetails(ListingDetails listingDetail);
 
+	void deleteAll();
+
 }

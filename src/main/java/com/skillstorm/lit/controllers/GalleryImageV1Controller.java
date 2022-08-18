@@ -55,10 +55,15 @@ public class GalleryImageV1Controller {
 	@PostMapping
 	@Operation(summary = "Save gallery image.", description = "An API enpoint to create a gallery image mapping of the product id to the gallery image relative filepath.")
 	public ResponseEntity<GalleryImage> create(@RequestBody GalleryImage image) {
+		LOG.info("===========================================================\n");
+		LOG.info("Creating a gallery image with " + image);
 		try {
 			image = service.create(image);
+			System.out.println("    is image null?" + (image == null));
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			LOG.info("======================================================\n");
+			LOG.info("Create Gallery Image threw error " + e.getClass() + ":" + e.getMessage() + "\nCaused by: "+ e.getCause());
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(image, image == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
 	}
