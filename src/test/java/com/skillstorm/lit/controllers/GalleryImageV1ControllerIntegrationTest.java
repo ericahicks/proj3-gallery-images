@@ -59,6 +59,7 @@ public class GalleryImageV1ControllerIntegrationTest {
 		imageService.deleteAll();
 	}
 	
+	
 	@Test
 	public void testFindById() throws Exception {
 		// put a image in the database
@@ -106,6 +107,10 @@ public class GalleryImageV1ControllerIntegrationTest {
 		image.getListingDetail().setGalleryImages(images);
 		image2.getListingDetail().setGalleryImages(images);
 		
+		List<GalleryImage> expected = new ArrayList<>();
+		expected.add(image);
+		expected.add(image2);
+		
 		
 		// check that it is there using mock GET request
 		String url = "/gallery/v1/";
@@ -116,11 +121,42 @@ public class GalleryImageV1ControllerIntegrationTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-			.andExpect(content().string(mapper.writeValueAsString(images)));
+			.andExpect(content().string(mapper.writeValueAsString(expected)));
 	}
 	
-	@Test void testFindByListingDetailsId() {
+	@Test 
+	public void testFindByListingDetailsId() throws JsonProcessingException, Exception {
+		// put a image in the database
+		ListingDetails detail = new ListingDetails();
+		detail = this.detailService.save(detail);
 		
+		GalleryImage image = new GalleryImage();
+		GalleryImage image2 = new GalleryImage();
+		image.setImageSrc("no image source");
+		image2.setImageSrc("image source");
+		image.setListingDetail(detail);
+		image2.setListingDetail(detail);
+		
+		image = this.imageService.create(image);
+		image2 = this.imageService.create(image2);
+		Set<GalleryImage> images = new HashSet<>();
+		images.add(image);
+		images.add(image2);
+		
+		image.getListingDetail().setGalleryImages(images);
+		image2.getListingDetail().setGalleryImages(images);
+		
+		
+		// check that it is there using mock GET request
+		String url = "/gallery/v1/" + detail.getId();
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+            .accept("application/json"))
+			.andExpect(status().isOk());
+//					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//					.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+//					.andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
+//					.andExpect(content().string(mapper.writeValueAsString(images)));
 	}
 	
 	@Test
