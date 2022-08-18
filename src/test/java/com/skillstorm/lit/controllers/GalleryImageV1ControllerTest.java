@@ -23,6 +23,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+//import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -32,8 +34,10 @@ import com.skillstorm.lit.models.GalleryImage;
 import com.skillstorm.lit.models.ListingDetails;
 import com.skillstorm.lit.services.GalleryImageService;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("dev")
 public class GalleryImageV1ControllerTest {
 
 	@Autowired
@@ -47,7 +51,7 @@ public class GalleryImageV1ControllerTest {
 	
 	@Test
 	public void testGetImage() throws JsonProcessingException, Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		GalleryImage image = new GalleryImage();
 		image.setImageSrc("image source");
 		image.setId(id);
@@ -56,6 +60,7 @@ public class GalleryImageV1ControllerTest {
 		
 		String url = "/gallery/v1/" + id.toString();
 		this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
 				.contentType("application/json")
 	            .content(mapper.writeValueAsString(image))
 	            .accept("application/json"))
@@ -67,7 +72,7 @@ public class GalleryImageV1ControllerTest {
 	
 	@Test
 	public void testGetAll() throws JsonProcessingException, Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		GalleryImage image = new GalleryImage();
 		image.setImageSrc("image source");
 		image.setId(id);
@@ -78,8 +83,9 @@ public class GalleryImageV1ControllerTest {
 		Mockito.when(service.findAll()).thenReturn(images);
 		
 		String url = "/gallery/v1/";
-		this.mockMvc.perform(MockMvcRequestBuilders.get(url))
-				.andExpect(status().isOk())
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				).andExpect(status().isOk())
 				.andExpect(content().string(mapper.writeValueAsString(images)));
 		
 		verify(service, times(1)).findAll();
@@ -87,7 +93,7 @@ public class GalleryImageV1ControllerTest {
 	
 	@Test
 	public void testGetImageByListingDetail() throws JsonProcessingException, Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		GalleryImage image = new GalleryImage();
 		image.setImageSrc("image source");
 		image.setId(id);
@@ -98,8 +104,9 @@ public class GalleryImageV1ControllerTest {
 		Mockito.when(service.findByListingDetailsId(any())).thenReturn(images);
 		
 		String url = "/gallery/v1/listing-details/" + id.toString();
-		this.mockMvc.perform(MockMvcRequestBuilders.get(url))
-				.andExpect(status().isOk())
+		this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt()))
+				).andExpect(status().isOk())
 				.andExpect(content().string(mapper.writeValueAsString(images)));
 		
 		verify(service, times(1)).findByListingDetailsId(any());
@@ -107,7 +114,7 @@ public class GalleryImageV1ControllerTest {
 	
 	@Test
 	public void testCreateImageDetailsFound() throws JsonProcessingException, Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		GalleryImage image = new GalleryImage();
 		image.setImageSrc("image source");
 		image.setId(id);
@@ -116,6 +123,7 @@ public class GalleryImageV1ControllerTest {
 		
 		String url = "/gallery/v1/";
 		this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
 				.contentType("application/json")
 	            .content(mapper.writeValueAsString(image))
 	            .accept("application/json"))
@@ -127,33 +135,8 @@ public class GalleryImageV1ControllerTest {
 	}
 	
 	@Test
-	public void testCreateImageDetailsNotFound() throws JsonProcessingException, Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
-		GalleryImage image = new GalleryImage();
-		image.setImageSrc("image source");
-		image.setId(id);
-		
-		Mockito.when(service.create(any()))
-		    .thenThrow(DataIntegrityViolationException.class);
-		
-		String url = "/gallery/v1/";
-		MockHttpServletResponse response = 
-			this.mockMvc.perform(MockMvcRequestBuilders.post(url)
-				.contentType("application/json")
-	            .content(mapper.writeValueAsString(image))
-	            .accept("application/json"))
-				.andReturn().getResponse();
-		
-		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value()); // why does HttpStatus.INTERNAL_SERVER_ERROR cause test to fail?
-		assertThat(response.getContentAsString()).isEmpty();
-		
-		verify(service, times(1)).create(any());
-		
-	}
-	
-	@Test
-	public void testUpdate() throws Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+	public void testUpdateImageFound() throws Exception {
+		UUID id = UUID.randomUUID();
 		GalleryImage image = new GalleryImage();
 		image.setImageSrc("image source");
 		image.setId(id);
@@ -162,6 +145,7 @@ public class GalleryImageV1ControllerTest {
 		
 		String url = "/gallery/v1/" + id;
 		this.mockMvc.perform(MockMvcRequestBuilders.put(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
 				.contentType("application/json")
 	            .content(mapper.writeValueAsString(image))
 	            .accept("application/json"))
@@ -172,46 +156,50 @@ public class GalleryImageV1ControllerTest {
 	}
 	
 	@Test
+	public void testUpdateImageNotFound() throws Exception {
+		UUID id = UUID.randomUUID();
+		GalleryImage image = new GalleryImage();
+		image.setId(id);
+		
+		Mockito.when(service.update(any())).thenReturn(null);
+		
+		String url = "/gallery/v1/" + id;
+		this.mockMvc.perform(MockMvcRequestBuilders.put(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				.contentType("application/json")
+	            .content(mapper.writeValueAsString(image))
+	            .accept("application/json"))
+				.andExpect(status().isBadRequest());
+		
+		verify(service, times(1)).update(any());
+	}
+	
+	@Test
 	public void testDeleteById() throws Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		
 		Mockito.doNothing().when(service).deleteById(id);
 		
 		String url = "/gallery/v1/" + id;
-		this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
-				.andExpect(status().isOk());
+		this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				).andExpect(status().isNoContent());
 		
 		verify(service, times(1)).deleteById(id);
 	}
 	
 	@Test
-	public void testDeleteAllFromDetails() throws Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
-		ListingDetails detail = new ListingDetails();
-		detail.setId(id);
-		
-		Mockito.doNothing().when(service).deleteAllFromDetails(detail);
-		
-		String url = "/gallery/v1/";
-		this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
-				.contentType("application/json")
-	            .content(mapper.writeValueAsString(detail)))
-				.andExpect(status().isOk());
-		
-		verify(service, times(1)).deleteAllFromDetails(any());
-	}
-	
-	@Test
 	public void testDeleteByDetailId() throws Exception {
-		UUID id = UUID.fromString("638cc430-511a-490f-93be-48ee957bf731");
+		UUID id = UUID.randomUUID();
 		ListingDetails detail = new ListingDetails();
 		detail.setId(id);
 		
 		Mockito.doNothing().when(service).deleteAllFromDetails(detail);
 		
-		String url = "/gallery/v1//listing-details/" + id;
-		this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
-				.andExpect(status().isOk());
+		String url = "/gallery/v1/listing-details/" + id;
+		this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
+//				.with(SecurityMockMvcRequestPostProcessors.jwt()
+				).andExpect(status().isNoContent());
 		
 		verify(service, times(1)).deleteAllFromDetails(any());
 	}

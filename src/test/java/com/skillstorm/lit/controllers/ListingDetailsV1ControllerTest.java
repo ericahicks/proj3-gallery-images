@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillstorm.lit.models.ListingDetails;
 import com.skillstorm.lit.services.ListingDetailsService;
 
+
 @WebMvcTest(ListingDetailsV1Controller.class)
 public class ListingDetailsV1ControllerTest {
 
@@ -65,6 +66,7 @@ public class ListingDetailsV1ControllerTest {
 		details.setReleaseDate(new Date(System.currentTimeMillis()));
 	}
 	
+
 	@Test
 	public void testGetDetailsById() throws Exception {
 		Mockito.when(service.findById(any())).thenReturn(details);
