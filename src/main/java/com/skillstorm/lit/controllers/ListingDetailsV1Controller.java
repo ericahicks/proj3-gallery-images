@@ -53,12 +53,14 @@ public class ListingDetailsV1Controller {
 	}
 	
 	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable UUID id) {
 		// remove all images related to this listing details
 		ListingDetails detail = new ListingDetails();
 		detail.setId(id); // given id but need detail obj so creating one
 		imageService.deleteAllFromDetails(detail);
 		// remove the listing details itself
+		service.delete(id);
 	}
 
 }
